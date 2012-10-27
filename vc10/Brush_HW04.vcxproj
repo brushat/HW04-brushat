@@ -107,11 +107,15 @@
     <ClCompile Include="..\src\Brush_HW04App.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\HW04StarterFiles\HW04StarterFiles\Starbucks.h" />
+    <ClInclude Include="..\include\brushatStarbucks.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\include\Starbucks.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resources\Starbucks_2006.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
