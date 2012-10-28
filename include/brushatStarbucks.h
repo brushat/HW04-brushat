@@ -12,9 +12,12 @@
 #pragma
 #include "Starbucks.h"
 
-class brinkmwjStarbucks : public Starbucks {
+class brushatStarbucks : public Starbucks {
 public:
 	
+	brushatStarbucks();
+
+
 	/* Note: If you detect that two items have the same coordinates, then do not add the new item
 	 *       that has the same coordinates as another item. This is guaranteed to happen, by the way,
 	 *       because some Starbucks locations are listed in the database twice. We will define two locations
@@ -27,4 +30,5 @@ public:
 	 *  answer may be approximate, but then you will lose points on the "Accuracy" quality measure
 	 */
 	Entry* getNearest(double x, double y) = 0;
+
 };

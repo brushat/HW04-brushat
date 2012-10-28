@@ -104,6 +104,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\brushatStarbucks.cpp" />
     <ClCompile Include="..\src\Brush_HW04App.cpp" />
   </ItemGroup>
   <ItemGroup>
