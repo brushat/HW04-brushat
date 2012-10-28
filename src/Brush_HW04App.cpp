@@ -34,7 +34,22 @@ private:
 
 void Brush_HW04App::setup()
 {
+	console() << "Hello" << std::endl;
+	
+	ifstream in("C:\Users\brushat\Documents\HW04-brushat\resources");
 
+	vector<Entry> locations;
+	
+	if(in.fail()){
+		console() << "failed to open file" << std::endl;
+		return;
+	}
+
+	string line;
+	do{
+		Entry e;
+	}
+	while(!in.eof());
 }
 
 void Brush_HW04App::prepareSettings(Settings* settings){
