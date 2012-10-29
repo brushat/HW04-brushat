@@ -32,17 +32,16 @@ private:
 	static const int AppWidth=800;
 	static const int AppHeight=600;
 	static const int TextureSize=1024;
-	brushatStarbucks* bucksLocs;
+	
 	
 };
 
 void Brush_HW04App::setup()
 {
-	console() << "Hello" << std::endl;
 	
 	ifstream in("..\\resources\\Starbucks_2006.csv");
 
-	vector<Entry> vector;
+	vector<Entry> vec;
 
 	if(in.fail()){
 		console() << "failed to open file" << std::endl;
@@ -62,38 +61,44 @@ void Brush_HW04App::setup()
 		in.get();
 		in >> e.y;
 
-		vector.push_back(e);
+		vec.push_back(e);
 	}
 	while(!in.eof());
-
-	for(int j = 0; j < vector.size(); j++){
+	
+	for(int j = 0; j < vec.size(); j++){
 		// I think this may violate my theta(N) claimed in the first 
-		for(int k = j+1; k < vector.size(); k++){
-			if(((abs(vector[j].x) - abs(vector[k].x)) < .00001) && ((abs(vector[j].y) - abs(vector[k].y)) < .00001)){
+		for(int k = j+1; k < vec.size(); k++){
+			if(((abs(vec[j].x) - abs(vec[k].x)) < .00001) && ((abs(vec[j].y) - abs(vec[k].y)) < .00001)){
 				// how to erase a single element from a vector 
 				// http://stackoverflow.com/questions/875103/how-to-erase-element-from-stdvector-by-index
-				vector.erase(vector.begin() + k);
+				vec.erase(vec.begin() + k);
 			}
 		}
 	}
-
+	
 	// Shuffling a vector
 	// http://www.cplusplus.com/forum/general/61397/
-	std::random_shuffle(vector.begin(), vector.end());
+	std::random_shuffle(vec.begin(), vec.end());
 
-	Entry* locations = new Entry[vector.size()];
+	
+	Entry *locations = new Entry[vec.size()];
 
-	for(int i = 0; i < vector.size(); i++){
-		locations[i] = vector[i];
+	for(int i = 0; i < (vec.size()-1); i++){
+		locations[i] = vec.at(i);
 	}
 
-	bucksLocs = new brushatStarbucks();
+	
+		
+	brushatStarbucks bucksLocs;
 
-	bucksLocs->build(locations, vector.size());
+	bucksLocs.build(locations, vec.size());
 
-	Entry* nearest = bucksLocs->getNearest(0,0);
+	console() << "output = " << bucksLocs.locations[0].identifier << endl;
+	console() << "output = " << bucksLocs.locations[1].identifier << endl;
 
-	//cout << nearest->identifier << " " << nearest->x << " " << nearest->y << std::endl;
+	Entry* nearest = bucksLocs.getNearest(0,0);
+
+	console() << nearest->identifier << " " << nearest->x << " " << nearest->y << std::endl;
 }
 
 void Brush_HW04App::prepareSettings(Settings* settings){
