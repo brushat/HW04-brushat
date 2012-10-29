@@ -66,6 +66,21 @@ void Brush_HW04App::setup()
 	}
 	while(!in.eof());
 
+	for(int j = 0; j < vector.size(); j++){
+		// I think this may violate my theta(N) claimed in the first 
+		for(int k = j+1; k < vector.size(); k++){
+			if(((abs(vector[j].x) - abs(vector[k].x)) < .00001) && ((abs(vector[j].y) - abs(vector[k].y)) < .00001)){
+				// how to erase a single element from a vector 
+				// http://stackoverflow.com/questions/875103/how-to-erase-element-from-stdvector-by-index
+				vector.erase(vector.begin() + k);
+			}
+		}
+	}
+
+	// Shuffling a vector
+	// http://www.cplusplus.com/forum/general/61397/
+	std::random_shuffle(vector.begin(), vector.end());
+
 	Entry* locations = new Entry[vector.size()];
 
 	for(int i = 0; i < vector.size(); i++){
@@ -75,6 +90,10 @@ void Brush_HW04App::setup()
 	bucksLocs = new brushatStarbucks();
 
 	bucksLocs->build(locations, vector.size());
+
+	Entry* nearest = bucksLocs->getNearest(0,0);
+
+	//cout << nearest->identifier << " " << nearest->x << " " << nearest->y << std::endl;
 }
 
 void Brush_HW04App::prepareSettings(Settings* settings){

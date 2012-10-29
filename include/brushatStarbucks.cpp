@@ -35,13 +35,15 @@ brushatStarbucks::~brushatStarbucks(void){
 }
 
 void brushatStarbucks::build(Entry* c, int n){
-	vector<Entry> vector;
+	//vector<Entry> vector;
 
 	for(int i = 0; i < n; i++){
-		vector.push_back(c[i]);
+		locations[i] = c[i];
 	}
 
+	/*
 	for(int j = 0; j < vector.size(); j++){
+		// I think this may violate my theta(N) claimed in the first 
 		for(int k = j+1; k < vector.size(); k++){
 			if(((abs(vector[j].x) - abs(vector[k].x)) < .00001) && ((abs(vector[j].y) - abs(vector[k].y)) < .00001)){
 				// how to erase a single element from a vector 
@@ -50,24 +52,39 @@ void brushatStarbucks::build(Entry* c, int n){
 			}
 		}
 	}
+	*/
 
 	// Shuffling a vector
 	// http://www.cplusplus.com/forum/general/61397/
-	std::random_shuffle(vector.begin(), vector.end());
-	locations = new Entry[vector.size()];
+	//std::random_shuffle(vector.begin(), vector.end());
+	//locations = new Entry[vector.size()];
 
+	/*
 	for(int l = 0; l < vector.size(); l++){
 		locations[l] = vector[l];
 	}
+	*/
 
-	size = vector.size();
+	// Took all of this stuff and put it in the setup in order to keep running time at theta(N)
+	size = n;
 }
 
 Entry* brushatStarbucks::getNearest(double x, double y){
 	
-	//Entry e = locations[0];
-	/*for(int i = 0; i < size; i++){
-
+	Entry* nearest = new Entry();
+	Entry current = locations[0];
+	/*
+	int shortest = sqrt((current.x-x)*(current.x-x) + (current.y-y)*(current.y-y));
+	for(int i = 0; i < size; i++){
+		int nextDist = sqrt((locations[i].x-x)*(locations[i].x-x) + (locations[i].y-y)*(locations[i].y-y));
+		if(nextDist < shortest){
+			shortest = nextDist;
+			current = locations[i];
+		}
 	}
-	return e;*/
+	*/
+	*nearest = current;
+	return nearest;
+	
 }
+	
