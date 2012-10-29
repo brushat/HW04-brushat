@@ -86,17 +86,16 @@ void Brush_HW04App::setup()
 	for(int i = 0; i < (vec.size()-1); i++){
 		locations[i] = vec.at(i);
 	}
-
-	
 		
 	brushatStarbucks bucksLocs;
 
 	bucksLocs.build(locations, vec.size());
 
+	delete[] locations;
 	console() << "output = " << bucksLocs.locations[0].identifier << endl;
 	console() << "output = " << bucksLocs.locations[1].identifier << endl;
 
-	Entry* nearest = bucksLocs.getNearest(0,0);
+	Entry* nearest = bucksLocs.getNearest(.5,.5);
 
 	console() << nearest->identifier << " " << nearest->x << " " << nearest->y << std::endl;
 }
