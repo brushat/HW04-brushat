@@ -13,6 +13,8 @@
 #include "cinder/app/KeyEvent.h"
 #include "cinder/Text.h"
 #include "brushatStarbucks.h"
+#include "Starbucks.h"
+
 
 using namespace ci;
 using namespace ci::app;
@@ -30,16 +32,18 @@ private:
 	static const int AppWidth=800;
 	static const int AppHeight=600;
 	static const int TextureSize=1024;
+	brushatStarbucks* bucksLocs;
+	
 };
 
 void Brush_HW04App::setup()
 {
 	console() << "Hello" << std::endl;
 	
-	ifstream in("C:\Users\brushat\Documents\HW04-brushat\resources");
+	ifstream in("..\\resources\\Starbucks_2006.csv");
 
-	vector<Entry> locations;
-	
+	vector<Entry> vector;
+
 	if(in.fail()){
 		console() << "failed to open file" << std::endl;
 		return;
@@ -48,8 +52,29 @@ void Brush_HW04App::setup()
 	string line;
 	do{
 		Entry e;
+
+		getline(in, line, ',');
+		e.identifier = line;
+
+		in.get();
+		in >> e.x;
+
+		in.get();
+		in >> e.y;
+
+		vector.push_back(e);
 	}
 	while(!in.eof());
+
+	Entry* locations = new Entry[vector.size()];
+
+	for(int i = 0; i < vector.size(); i++){
+		locations[i] = vector[i];
+	}
+
+	bucksLocs = new brushatStarbucks();
+
+	bucksLocs->build(locations, vector.size());
 }
 
 void Brush_HW04App::prepareSettings(Settings* settings){
