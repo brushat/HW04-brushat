@@ -35,38 +35,13 @@ brushatStarbucks::~brushatStarbucks(void){
 }
 
 void brushatStarbucks::build(Entry* c, int n){
-	//vector<Entry> vector;
+	
 	locations = new Entry[n];
 
 	for(int i = 0; i < n-1; i++){
 		locations[i] = c[i];
 	}
-	// DON'T DO THIS OR ELSE IT WILL BE O(N^2)
-	/*
-	for(int j = 0; j < vector.size(); j++){
-		// I think this may violate my theta(N) claimed in the first 
-		for(int k = j+1; k < vector.size(); k++){
-			if(((abs(vector[j].x) - abs(vector[k].x)) < .00001) && ((abs(vector[j].y) - abs(vector[k].y)) < .00001)){
-				// how to erase a single element from a vector 
-				// http://stackoverflow.com/questions/875103/how-to-erase-element-from-stdvector-by-index
-				vector.erase(vector.begin() + k);
-			}
-		}
-	}
-	*/
-
-	// Shuffling a vector
-	// http://www.cplusplus.com/forum/general/61397/
-	//std::random_shuffle(vector.begin(), vector.end());
-	//locations = new Entry[vector.size()];
-
-	/*
-	for(int l = 0; l < vector.size(); l++){
-		locations[l] = vector[l];
-	}
-	*/
-
-	// Took all of this stuff and put it in the setup in order to keep running time at theta(N)
+	
 	size = n;
 }
 
