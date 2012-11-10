@@ -42,5 +42,8 @@
     <None Include="..\resources\Starbucks_2006.csv">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\..\map">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

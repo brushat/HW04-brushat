@@ -14,6 +14,7 @@
 #include "cinder/Text.h"
 #include "brushatStarbucks.h"
 #include "Starbucks.h"
+#include "..\include\Resources.h"
 
 
 using namespace ci;
@@ -29,9 +30,11 @@ class Brush_HW04App : public AppBasic {
 	void prepareSettings(Settings* settings);
 
 private:
-	static const int AppWidth=800;
+	static const int AppWidth=600;
 	static const int AppHeight=600;
 	static const int TextureSize=1024;
+	Surface* mySurface_;
+	gl::Texture map;
 	
 	
 };
@@ -39,6 +42,9 @@ private:
 void Brush_HW04App::setup()
 {
 	
+	mySurface_ = new Surface( TextureSize, TextureSize, true);
+	map = loadImage( "../resources/map.jpg" );
+
 	ifstream in("..\\resources\\Starbucks_2006.csv");
 
 	vector<Entry> vec;
@@ -115,7 +121,9 @@ void Brush_HW04App::update()
 
 void Brush_HW04App::draw()
 {
+	gl::draw(*mySurface_);
 
+	gl::draw(map);  
 }
 
 CINDER_APP_BASIC( Brush_HW04App, RendererGl )
