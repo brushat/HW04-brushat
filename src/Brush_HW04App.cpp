@@ -1,6 +1,10 @@
-
-
-
+/*****
+ * Author   : brushat
+ * Date     : 2012-11-08
+ * Sources  : All code is original
+ * Purpose  : 
+ *           The main class that goes and gets all of the necessary data and draws everything
+ */
 
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
@@ -36,15 +40,19 @@ private:
 	Surface* mySurface_;
 	gl::Texture map;
 	
-	
+	brushatStarbucks bucksLocs;
+	brushatStarbucks census2010;
+	brushatStarbucks census2000;
 };
 
 void Brush_HW04App::setup()
 {
-	
+	/////////////////////////////////////////////// LOAD MAP /////////////////////////////////////////////////////////////
 	mySurface_ = new Surface( TextureSize, TextureSize, true);
 	map = loadImage( "../resources/map.jpg" );
+	
 
+	/////////////////////////////////////////////// CREATE STARBUCKS ARRAY ///////////////////////////////////////////////
 	ifstream in("..\\resources\\Starbucks_2006.csv");
 
 	vector<Entry> vec;
@@ -74,7 +82,7 @@ void Brush_HW04App::setup()
 	for(int j = 0; j < vec.size(); j++){
 		// I think this may violate my theta(N) claimed in the first 
 		for(int k = j+1; k < vec.size(); k++){
-			if(((abs(vec[j].x) - abs(vec[k].x)) < .00001) && ((abs(vec[j].y) - abs(vec[k].y)) < .00001)){
+			if((abs(vec[j].x- vec[k].x) < .00001) && (abs(vec[j].y - vec[k].y) < .00001)){
 				// how to erase a single element from a vector 
 				// http://stackoverflow.com/questions/875103/how-to-erase-element-from-stdvector-by-index
 				vec.erase(vec.begin() + k);
@@ -93,17 +101,91 @@ void Brush_HW04App::setup()
 		locations[i] = vec.at(i);
 	}
 		
-	brushatStarbucks bucksLocs;
 
 	bucksLocs.build(locations, vec.size());
 
 	delete[] locations;
-	console() << "output = " << bucksLocs.locations[0].identifier << endl;
-	console() << "output = " << bucksLocs.locations[1].identifier << endl;
 
-	Entry* nearest = bucksLocs.getNearest(.5,.5);
+	
+	/////////////////////////////////////////////// CREATE CENSUS DATA /////////////////////////////////////////////////////
+	/////////////////////////////////////////////// CREATE CENSUS 2000 /////////////////////////////////////////////////////
+	ifstream cin00("..\\resources\\Census_2000.csv");
 
-	console() << nearest->identifier << " " << nearest->x << " " << nearest->y << std::endl;
+	vector<CensusEntry> vec00;
+	string junk1;
+	
+
+	if(cin00.fail()){
+		console() << "failed to open file" << std::endl;
+		return;
+	}
+	
+	do{
+		CensusEntry e;
+		for(int i = 0; i <= 3; i++){
+			getline(cin00, junk1, ',');
+		}
+		cin00 >> e.population;
+		cin00.get();
+		cin00 >> e.x;
+		cin00.get();
+		cin00 >> e.y;
+		vec00.push_back(e);
+
+	}
+	while(!cin00.eof());
+
+	CensusEntry* census00 = new CensusEntry[vec00.size()];
+	for(int i = 0; i < vec00.size(); i++){
+		census00[i] = vec00.at(i);
+	}
+	census2000.buildCensus(census00, vec00.size());
+
+	/////////////////////////////////////////////// CREATE CENSUS 2010 /////////////////////////////////////////////////////
+	ifstream cin10("..\\resources\\Census_2010.csv");
+
+	vector<CensusEntry> vec10;
+	string junk2;
+
+	if(cin10.fail()){
+		console() << "failed to open file" << std::endl;
+		return;
+	}
+	
+	do{
+		CensusEntry e;
+		for(int i = 0; i <= 3; i++){
+			getline(cin10, junk2, ',');
+		}
+		cin10 >> e.population;
+		cin10.get();
+		cin10 >> e.x;
+		cin10.get();
+		cin10 >> e.y;
+		vec10.push_back(e);
+
+	}
+	while(!cin10.eof());
+
+	CensusEntry* census10 = new CensusEntry[vec10.size()];
+	for(int i = 0; i < vec10.size(); i++){
+		census10[i] = vec10.at(i);
+	}
+	census2010.buildCensus(census10, vec10.size());
+
+	/////////////////////////////////////////////// TESTER AREA /////////////////////////////////////////////////////////////
+	console() << "Starbucks location Tester" << endl;
+	console() << "1st Location = " << bucksLocs.locations[0].identifier << endl;
+	console() << "2nd Location = " << bucksLocs.locations[1].identifier << endl;
+	console() << "Nearest to (.5,.5) = " << endl;
+	console() << bucksLocs.getNearest(.5,.5)->identifier << " " << bucksLocs.getNearest(.5,.5)->x << " " << bucksLocs.getNearest(.5,.5)->y << std::endl;
+	console() << "" << endl;
+	console() << "Census Tester" << endl;
+	console() << "First 2000 Data Point = " << census2000.census[0].population << endl;
+	console() << "First 2010 Data Point = " << census2010.census[0].population << endl;
+	gl::draw(*mySurface_);
+	
+	 
 }
 
 void Brush_HW04App::prepareSettings(Settings* settings){
@@ -121,9 +203,10 @@ void Brush_HW04App::update()
 
 void Brush_HW04App::draw()
 {
-	gl::draw(*mySurface_);
+	gl::draw(map); 
 
-	gl::draw(map);  
+	Entry e = bucksLocs.locations[0];
+	bucksLocs.drawBucks(e.x,e.y);
 }
 
 CINDER_APP_BASIC( Brush_HW04App, RendererGl )

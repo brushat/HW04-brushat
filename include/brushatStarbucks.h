@@ -17,12 +17,20 @@ using namespace std;
 class brushatStarbucks : public Starbucks 
 {
 public:
-	brushatStarbucks();
-	~brushatStarbucks(void);
+	
+	// Starbucks locations stuff
 	Entry* locations;
 	vector<Entry> vectLocs;
 	int vecLocsSize;
-	int locsSize; //the size of our locations unsorted array
+	int locsSize;
+	// Census Data
+	CensusEntry* census;
+	vector<CensusEntry> censVec;
+	int censusSize;
+	int censVecSize;
+
+	brushatStarbucks();
+	~brushatStarbucks(void);
 
 	/* Note: If you detect that two items have the same coordinates, then do not add the new item
 	 *       that has the same coordinates as another item. This is guaranteed to happen, by the way,
@@ -30,6 +38,8 @@ public:
 	 *       to be the "same location" if both |x1 - x2| <= 0.00001 and |y1 - y2| < 0.00001
 	 */
 	void build(Entry* c, int n);
+
+	void buildCensus(CensusEntry* c, int n);
 	
 	/*
 	 * Return a pointer to the entry that is closest to the given coordinates. Your
@@ -37,4 +47,7 @@ public:
 	 */
 	Entry* getNearest(double x, double y);
 
+	void drawBucks(double x, double y);
+
+	void drawCensus(double x, double y);
 };

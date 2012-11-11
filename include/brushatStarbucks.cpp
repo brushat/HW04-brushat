@@ -23,8 +23,9 @@
 #include "Starbucks.h"
 #include <math.h>
 
+using namespace ci;
+using namespace ci::app;
 using namespace std;
-
 
 brushatStarbucks::brushatStarbucks(){
 
@@ -34,6 +35,9 @@ brushatStarbucks::~brushatStarbucks(void){
 
 }
 
+/**
+ * Build the array of entries for starbucks locations and update the variables we will use
+ */
 void brushatStarbucks::build(Entry* c, int n){
 	
 	locations = new Entry[n];
@@ -45,7 +49,20 @@ void brushatStarbucks::build(Entry* c, int n){
 	locsSize = n;
 	vecLocsSize = vectLocs.size();
 }
+ void brushatStarbucks::buildCensus(CensusEntry* c, int n){
 
+	 census = new CensusEntry[n];
+
+	 for(int i = 0; i < n-1; i++){
+		 census[i] = c[i];
+		 censVec.push_back(c[i]);
+	 }
+	 censusSize = n;
+	 censVecSize = censVec.size();
+ }
+/**
+ * Return the entry for the nearest starbuck to the x and y coordinates specified
+ */
 Entry* brushatStarbucks::getNearest(double x, double y){
 	
 	Entry* nearest = new Entry();
@@ -62,5 +79,19 @@ Entry* brushatStarbucks::getNearest(double x, double y){
 	}
 	return nearest;
 	
+}
+
+void brushatStarbucks::drawBucks(double x, double y){
+	
+
+	glColor3f(Color(0,0,1));
+
+	gl::drawSolidCircle( Vec2f( x*600, y*600 ), 10.0f);
+
+	
+}
+
+void brushatStarbucks::drawCensus(double x, double y){
+
 }
 	

@@ -30,6 +30,13 @@ public:
 	double y;
 };
 
+class CensusEntry {
+public:
+	int population;
+	double x;
+	double y;
+};
+
 /*
  * This is an "abstract class" ... it contains a list of the public methods of the class, but
  *  they are all "pure virtual," which means they are not implemented anywhere in the code.
@@ -52,10 +59,21 @@ public:
 	 *       to be the "same location" if both |x1 - x2| <= 0.00001 and |y1 - y2| < 0.00001
 	 */
 	virtual void build(Entry* c, int n) = 0;
+
+	virtual void buildCensus(CensusEntry* c, int n) = 0;
 	
 	/*
 	 * Return a pointer to the entry that is closest to the given coordinates. Your
 	 *  answer may be approximate, but then you will lose points on the "Accuracy" quality measure
 	 */
 	virtual Entry* getNearest(double x, double y) = 0;
+	
+	/*
+	 * add all entries in the array to your data structure
+	 *
+	 * The "c" parameter is a pointer to an array of all the entries to be added, and n is the length of
+	 * the array.
+	 */
+	
+
 };
