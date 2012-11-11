@@ -40,25 +40,26 @@ void brushatStarbucks::build(Entry* c, int n){
 
 	for(int i = 0; i < n-1; i++){
 		locations[i] = c[i];
+		vectLocs.push_back(c[i]);
 	}
-	
-	size = n;
+	locsSize = n;
+	vecLocsSize = vectLocs.size();
 }
 
 Entry* brushatStarbucks::getNearest(double x, double y){
 	
 	Entry* nearest = new Entry();
-	Entry current = locations[0];
-	
-	int shortest = sqrt((current.x-x)*(current.x-x) + (current.y-y)*(current.y-y));
-	for(int i = 0; i < size-1; i++){
-		int nextDist = sqrt((locations[i].x-x)*(locations[i].x-x) + (locations[i].y-y)*(locations[i].y-y));
-		if(nextDist < shortest){
-			shortest = nextDist;
-			current = locations[i];
+
+	double nearestDist = 100.0;
+	for(int i = 0; i < vecLocsSize-1; i++){
+		double curX = vectLocs[i].x;
+		double curY = vectLocs[i].y;
+		double nextDist = sqrt((curX-x)*(curX-x) + (curY-y)*(curY-y));
+		if(nextDist < nearestDist){
+			nearestDist = nextDist;
+			nearest = &locations[i];
 		}
 	}
-	*nearest = current;
 	return nearest;
 	
 }

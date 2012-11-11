@@ -20,7 +20,9 @@ public:
 	brushatStarbucks();
 	~brushatStarbucks(void);
 	Entry* locations;
-	int size; //the size of our locations unsorted array
+	vector<Entry> vectLocs;
+	int vecLocsSize;
+	int locsSize; //the size of our locations unsorted array
 
 	/* Note: If you detect that two items have the same coordinates, then do not add the new item
 	 *       that has the same coordinates as another item. This is guaranteed to happen, by the way,
