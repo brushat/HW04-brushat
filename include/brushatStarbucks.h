@@ -23,6 +23,7 @@ public:
 	vector<Entry> vectLocs;
 	int vecLocsSize;
 	int locsSize;
+	Entry* nearest;
 	// Census Data
 	CensusEntry* census;
 	vector<CensusEntry> censVec;

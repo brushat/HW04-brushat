@@ -175,6 +175,7 @@ void Brush_HW04App::setup()
 
 	/////////////////////////////////////////////// TESTER AREA /////////////////////////////////////////////////////////////
 	console() << "Starbucks location Tester" << endl;
+	console() << bucksLocs.locsSize << endl;
 	console() << "1st Location = " << bucksLocs.locations[0].identifier << endl;
 	console() << "2nd Location = " << bucksLocs.locations[1].identifier << endl;
 	console() << "Nearest to (.5,.5) = " << endl;
@@ -183,7 +184,7 @@ void Brush_HW04App::setup()
 	console() << "Census Tester" << endl;
 	console() << "First 2000 Data Point = " << census2000.census[0].population << endl;
 	console() << "First 2010 Data Point = " << census2010.census[0].population << endl;
-	gl::draw(*mySurface_);
+	
 	
 	 
 }
@@ -195,6 +196,20 @@ void Brush_HW04App::prepareSettings(Settings* settings){
 
 void Brush_HW04App::mouseDown( MouseEvent event )
 {
+	int mouseX = event.getX();
+	int mouseY = event.getY();
+
+	double currentX = mouseX/600.0;
+	double currentY = 1-(mouseY/600.0);
+
+	bucksLocs.getNearest(currentX, currentY);
+
+	console() << bucksLocs.nearest->identifier << endl;
+	
+	gl::draw(map);
+	glColor3f(Color(1.0,0.0,0.0));
+	gl::drawSolidCircle( Vec2f( ((bucksLocs.nearest ->x * 600.0)), ( (1-(bucksLocs.nearest ->y)) * 600.0) ),  2.0f );	
+	glColor3f(Color(1.0,0.0,0.0));
 }
 
 void Brush_HW04App::update()
@@ -203,10 +218,14 @@ void Brush_HW04App::update()
 
 void Brush_HW04App::draw()
 {
-	gl::draw(map); 
-
-	Entry e = bucksLocs.locations[0];
-	bucksLocs.drawBucks(e.x,e.y);
+	//gl::clear();
+	//gl::draw(*mySurface_);
+	//gl::draw(map); 
+	for(int i = 0; i < bucksLocs.locsSize; i++){
+		Entry e = bucksLocs.locations[i];
+		bucksLocs.drawBucks(e.x,e.y);
+	}
+	
 }
 
 CINDER_APP_BASIC( Brush_HW04App, RendererGl )

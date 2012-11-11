@@ -65,8 +65,6 @@ void brushatStarbucks::build(Entry* c, int n){
  */
 Entry* brushatStarbucks::getNearest(double x, double y){
 	
-	Entry* nearest = new Entry();
-
 	double nearestDist = 100.0;
 	for(int i = 0; i < vecLocsSize-1; i++){
 		double curX = vectLocs[i].x;
@@ -82,13 +80,14 @@ Entry* brushatStarbucks::getNearest(double x, double y){
 }
 
 void brushatStarbucks::drawBucks(double x, double y){
-	
 
 	glColor3f(Color(0,0,1));
-
-	gl::drawSolidCircle( Vec2f( x*600, y*600 ), 10.0f);
-
 	
+	double mapx = x*600;
+	double mapy = (1-y)*600;
+	gl::drawSolidCircle( Vec2f( mapx, mapy ), 1.0f);
+
+	glColor3f(Color(1,1,1));
 }
 
 void brushatStarbucks::drawCensus(double x, double y){
