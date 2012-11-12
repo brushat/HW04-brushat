@@ -49,6 +49,9 @@ void brushatStarbucks::build(Entry* c, int n){
 	locsSize = n;
 	vecLocsSize = vectLocs.size();
 }
+/**
+* Build the census array of all of the census points
+*/
  void brushatStarbucks::buildCensus(CensusEntry* c, int n){
 
 	 census = new CensusEntry[n];
@@ -78,7 +81,10 @@ Entry* brushatStarbucks::getNearest(double x, double y){
 	return nearest;
 	
 }
-
+/*
+* Draw a starbucks location based on the x and y coordinate of the location
+* the location must be translated to draw on the cinder map
+**/
 void brushatStarbucks::drawBucks(double x, double y){
 
 	glColor3f(Color(0,0,1));

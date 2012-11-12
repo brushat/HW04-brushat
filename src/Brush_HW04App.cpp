@@ -44,6 +44,7 @@ private:
 	Surface* mySurface_;
 	gl::Texture map;
 	
+	// The three data structures we will use
 	brushatStarbucks bucksLocs;
 	brushatStarbucks census2010;
 	brushatStarbucks census2000;
@@ -61,7 +62,7 @@ void Brush_HW04App::setup()
 	
 	mFont = Font( "Times New Roman", 32 );
 	mSize = Vec2f( 800, 600 );
-	result = "Click on the map to find the nearest location to your click";
+	result = "Click on the map to find the nearest location to your click\nPress 'c' or 'b' for the display to change from census to starbucks";
 	bucks = true;
 	render();
 	/////////////////////////////////////////////// CREATE STARBUCKS ARRAY ///////////////////////////////////////////////
