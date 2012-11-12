@@ -83,7 +83,7 @@ void brushatStarbucks::drawBucks(double x, double y){
 
 	glColor3f(Color(0,0,1));
 	
-	double mapx = x*600;
+	double mapx = x*800;
 	double mapy = (1-y)*600;
 	gl::drawSolidCircle( Vec2f( mapx, mapy ), 1.0f);
 

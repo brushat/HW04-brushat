@@ -47,7 +47,9 @@ public:
 	 *  answer may be approximate, but then you will lose points on the "Accuracy" quality measure
 	 */
 	Entry* getNearest(double x, double y);
-
+	/*
+	* these two methods draw a starbuck or a census point based on the x and y coordinates
+	**/
 	void drawBucks(double x, double y);
 
 	void drawCensus(double x, double y);

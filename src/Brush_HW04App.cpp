@@ -32,9 +32,13 @@ class Brush_HW04App : public AppBasic {
 	void update();
 	void draw();
 	void prepareSettings(Settings* settings);
-
+	void render();
+	void keyDown(KeyEvent event);
+	gl::Texture		mTextTexture;
+	string result;
+	bool bucks;
 private:
-	static const int AppWidth=600;
+	static const int AppWidth=800;
 	static const int AppHeight=600;
 	static const int TextureSize=1024;
 	Surface* mySurface_;
@@ -43,15 +47,23 @@ private:
 	brushatStarbucks bucksLocs;
 	brushatStarbucks census2010;
 	brushatStarbucks census2000;
+
+	
+	Vec2f			mSize;
+	Font			mFont;
 };
 
 void Brush_HW04App::setup()
 {
 	/////////////////////////////////////////////// LOAD MAP /////////////////////////////////////////////////////////////
 	mySurface_ = new Surface( TextureSize, TextureSize, true);
-	map = loadImage( "../resources/map.jpg" );
+	map = loadImage( "../resources/map800.jpg" );
 	
-
+	mFont = Font( "Times New Roman", 32 );
+	mSize = Vec2f( 800, 600 );
+	result = "Click on the map to find the nearest location to your click";
+	bucks = true;
+	render();
 	/////////////////////////////////////////////// CREATE STARBUCKS ARRAY ///////////////////////////////////////////////
 	ifstream in("..\\resources\\Starbucks_2006.csv");
 
@@ -194,22 +206,48 @@ void Brush_HW04App::prepareSettings(Settings* settings){
 	settings->setResizable(false);
 }
 
+void Brush_HW04App::render()
+{
+	TextBox tbox = TextBox().alignment( TextBox::RIGHT ).font( mFont ).size( Vec2i( mSize.x, 600.0 ) ).text( result );
+	tbox.setColor( Color( 1.0f, 0.65f, 0.35f ) );
+	tbox.setBackgroundColor( ColorA( 0.0, 0, 0, 1 ) );
+	Vec2i sz = tbox.measure();
+	mTextTexture = gl::Texture( tbox.render() );
+}
+
+void Brush_HW04App::keyDown(KeyEvent event){
+	if(event.getChar() == 'b'){
+		if(bucks == true)
+			bucks = false;
+		else bucks = true;
+	}
+	else if(event.getChar() == 'c'){
+		if(bucks == true)
+			bucks = false;
+		else bucks = true;
+	}
+}
+
 void Brush_HW04App::mouseDown( MouseEvent event )
 {
 	int mouseX = event.getX();
 	int mouseY = event.getY();
 
-	double currentX = mouseX/600.0;
+	double currentX = mouseX/800.0;
 	double currentY = 1-(mouseY/600.0);
 
 	bucksLocs.getNearest(currentX, currentY);
 
 	console() << bucksLocs.nearest->identifier << endl;
+	result = bucksLocs.nearest->identifier;
+	render();
+	glColor3f(Color(1.0,0.0,0.0));
+	gl::drawSolidCircle( Vec2f( ((bucksLocs.nearest ->x * 800.0)), ( (1-(bucksLocs.nearest ->y)) * 600.0) ),  2.0f );
 	
+	glColor3f(Color(1.0,1.0,1.0));
 	gl::draw(map);
-	glColor3f(Color(1.0,0.0,0.0));
-	gl::drawSolidCircle( Vec2f( ((bucksLocs.nearest ->x * 600.0)), ( (1-(bucksLocs.nearest ->y)) * 600.0) ),  2.0f );	
-	glColor3f(Color(1.0,0.0,0.0));
+	//gl::drawString(result,Vec2f(0,600),Color(1.0,0.0,0.0),Font("Times New Roman", 16));
+	
 }
 
 void Brush_HW04App::update()
@@ -220,10 +258,21 @@ void Brush_HW04App::draw()
 {
 	//gl::clear();
 	//gl::draw(*mySurface_);
-	//gl::draw(map); 
-	for(int i = 0; i < bucksLocs.locsSize; i++){
-		Entry e = bucksLocs.locations[i];
-		bucksLocs.drawBucks(e.x,e.y);
+	//gl::draw(map);
+	if( mTextTexture )
+		gl::draw( mTextTexture );
+	
+	if(bucks){
+		for(int i = 0; i < bucksLocs.locsSize; i++){
+			Entry e = bucksLocs.locations[i];
+			bucksLocs.drawBucks(e.x,e.y);
+		}
+	}
+	else{
+		for(int j = 0; j < census2000.censusSize; j++){
+			CensusEntry c = census2000.census[j];
+			census2000.drawBucks(c.x,c.y);
+		}
 	}
 	
 }
