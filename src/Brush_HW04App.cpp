@@ -1,9 +1,10 @@
 /*****
  * Author   : brushat
  * Date     : 2012-11-08
- * Sources  : All code is original
+ * Sources  : All code is original, collaboration with Scott Vincent on some snippets
  * Purpose  : 
  *           The main class that goes and gets all of the necessary data and draws everything
+ * Note: This code is based on code that Scott Vincent and I often collaborated on.
  */
 
 #include "cinder/app/AppBasic.h"
@@ -58,14 +59,20 @@ void Brush_HW04App::setup()
 {
 	/////////////////////////////////////////////// LOAD MAP /////////////////////////////////////////////////////////////
 	mySurface_ = new Surface( TextureSize, TextureSize, true);
+	// Found online resource for understanding how to load images and also how to display them
+	// http://www.creativeapplications.net/tutorials/images-in-cinder-tutorials-cinder/
 	map = loadImage( "../resources/map800.jpg" );
 	
+
+	// Part of Cinder's TextBox Tutorial setup
 	mFont = Font( "Times New Roman", 32 );
 	mSize = Vec2f( 800, 600 );
 	result = "Click on the map to find the nearest location to your click\nPress 'c' or 'b' for the display to change from census to starbucks";
 	bucks = true;
 	render();
 	/////////////////////////////////////////////// CREATE STARBUCKS ARRAY ///////////////////////////////////////////////
+	
+	// Scott helped with this, specifically how to get the program to retrieve the correct values from the files
 	ifstream in("..\\resources\\Starbucks_2006.csv");
 
 	vector<Entry> vec;
@@ -103,7 +110,7 @@ void Brush_HW04App::setup()
 		}
 	}
 	
-	// Shuffling a vector
+	// Shuffling a vector, originally meant to be used for possible tree implementation
 	// http://www.cplusplus.com/forum/general/61397/
 	std::random_shuffle(vec.begin(), vec.end());
 
@@ -207,6 +214,8 @@ void Brush_HW04App::prepareSettings(Settings* settings){
 	settings->setResizable(false);
 }
 
+
+// Based heavily on Cinder's tutorial c++ project for using a textbox
 void Brush_HW04App::render()
 {
 	TextBox tbox = TextBox().alignment( TextBox::RIGHT ).font( mFont ).size( Vec2i( mSize.x, 600.0 ) ).text( result );
@@ -216,6 +225,7 @@ void Brush_HW04App::render()
 	mTextTexture = gl::Texture( tbox.render() );
 }
 
+//Keydown handling was based on Cinder Chapter 3: Inluence, same with mousedown
 void Brush_HW04App::keyDown(KeyEvent event){
 	if(event.getChar() == 'b'){
 		if(bucks == true)
@@ -231,9 +241,16 @@ void Brush_HW04App::keyDown(KeyEvent event){
 
 void Brush_HW04App::mouseDown( MouseEvent event )
 {
+
+	// Scott helped me out with this during office hours so it probably looks fairly similar
+	// ...however, as far as I can tell, mine does not work because of the textbox that I am using
+	// to display the result keeps getting drawn over the highligh, and mine should only highlight 
+	// one town at all times rather than keeping each location highlighted as you click
 	int mouseX = event.getX();
 	int mouseY = event.getY();
 
+	// Scott especially helped with this part because I forgot that you must translate
+	// the points from your mouseclick back to the format in the starbucks file
 	double currentX = mouseX/800.0;
 	double currentY = 1-(mouseY/600.0);
 
